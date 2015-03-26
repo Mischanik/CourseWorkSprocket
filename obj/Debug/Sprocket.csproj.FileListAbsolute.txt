@@ -1,0 +1,9 @@
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\bin\Debug\Sprocket.exe
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\bin\Debug\Sprocket.pdb
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.csprojResolveAssemblyReference.cache
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.csproj.ResolveComReference.cache
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.Properties.Resources.resources
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.csproj.GenerateResource.Cache
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.exe
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.pdb
+c:\users\user\documents\visual studio 2013\Projects\Sprocket\Sprocket\obj\Debug\Sprocket.SporcketGUI.resources
