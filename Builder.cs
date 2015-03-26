@@ -13,12 +13,7 @@ namespace Sprocket
     {
         #region Перечисления
 
-        private enum WorkPlanesEnum
-        {
-            WorkPlane_ZY = 1,
-            WorkPlane_ZX = 2,
-            WorkPlane_XY = 3,
-        }
+        private enum WorkPlanesEnum { WorkPlane_ZY = 1, WorkPlane_ZX }
 
         #endregion
         #region Приватные поля
@@ -84,16 +79,16 @@ namespace Sprocket
         /// Метод для построения модели
         /// </summary>
         /// <param name="sporcketParams">Параметры звезды</param>
-        public void Build(SporcketParams sporcketParams)
+        public void Build(Dictionary<string, double> sporcketParams)
         {
             if (sporcketParams == null) throw new ArgumentNullException();
 
             //Вызываем методы для построения 
             PlanarSketch sporcketSketch1 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, _centerPoint.X);
             Point2d point = _transientGeometry.CreatePoint2d(0, 0);
-            DrawCircle(sporcketParams.RadiusA, sporcketSketch1, point);
+            DrawCircle(sporcketParams["RadiusA"], sporcketSketch1, point);
             ExtrudeDefinition extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch1.Profiles.AddForSolid(), PartFeatureOperationEnum.kJoinOperation);
-            extrudeDef.SetDistanceExtent(sporcketParams.LengthA, PartFeatureExtentDirectionEnum.kPositiveExtentDirection);
+            extrudeDef.SetDistanceExtent(sporcketParams["LengthA"], PartFeatureExtentDirectionEnum.kPositiveExtentDirection);
              _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
           /*  PlanarSketch bevelSketch = MakeNewSketch(WorkPlanesEnum.WorkPlane_XY, 0);
@@ -145,21 +140,21 @@ namespace Sprocket
 
 
             PlanarSketch sporcketSketch2 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, _centerPoint.X);
-            DrawCircle(sporcketParams.RadiusB, sporcketSketch2, point);
+            DrawCircle(sporcketParams["RadiusB"], sporcketSketch2, point);
             
             extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch2.Profiles.AddForSolid(),PartFeatureOperationEnum.kJoinOperation);
-            extrudeDef.SetDistanceExtent(sporcketParams.LengthB+sporcketParams.LengthA, PartFeatureExtentDirectionEnum.kPositiveExtentDirection);
+            extrudeDef.SetDistanceExtent(sporcketParams["LengthB"]+sporcketParams["LengthA"], PartFeatureExtentDirectionEnum.kPositiveExtentDirection);
               _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
             TurnCamera();
 
             extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch2.Profiles.AddForSolid(),PartFeatureOperationEnum.kJoinOperation);
-            extrudeDef.SetDistanceExtent(sporcketParams.LengthC, PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
+            extrudeDef.SetDistanceExtent(sporcketParams["LengthC"] , PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
             _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
 
-            PlanarSketch sporcketSketch3 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams.LengthA+sporcketParams.LengthB);
-            DrawCircle(sporcketParams.RadiusC, sporcketSketch3, point);
+            PlanarSketch sporcketSketch3 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams["LengthA"]+sporcketParams["LengthB"]);
+            DrawCircle(sporcketParams["RadiusC"], sporcketSketch3, point);
              extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch3.Profiles.AddForSolid(),PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
               _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
@@ -167,8 +162,8 @@ namespace Sprocket
             //рисуем круг
 
             PlanarSketch sporcketSketch4 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, _centerPoint.X);
-            point = _transientGeometry.CreatePoint2d(0, (sporcketParams.RadiusA-sporcketParams.RadiusB)/2+sporcketParams.RadiusB);
-            DrawCircle(sporcketParams.RadiusD, sporcketSketch4, point);
+            point = _transientGeometry.CreatePoint2d(0, (sporcketParams["RadiusA"]-sporcketParams["RadiusB"])/2+sporcketParams["RadiusB"]);
+            DrawCircle(sporcketParams["RadiusD"], sporcketSketch4, point);
             extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch4.Profiles.AddForSolid(),PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kPositiveExtentDirection);
             ExtrudeFeature scratcExtrudeFeature = _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
@@ -179,19 +174,19 @@ namespace Sprocket
             featureCollection.Add(scratcExtrudeFeature);
 
             //Создание массива объектов
-            _partDef.Features.CircularPatternFeatures.Add(featureCollection, _partDef.WorkAxes[2], true, sporcketParams.NumberD, "360 deg", true, PatternComputeTypeEnum.kIdenticalCompute);
+            _partDef.Features.CircularPatternFeatures.Add(featureCollection, _partDef.WorkAxes[2], true, sporcketParams["NumberD"], "360 deg", true, PatternComputeTypeEnum.kIdenticalCompute);
 
-            PlanarSketch sporcketSketch5 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams.LengthB + sporcketParams.LengthA);
+            PlanarSketch sporcketSketch5 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams["LengthB"] + sporcketParams["LengthA"]);
             point = _transientGeometry.CreatePoint2d(0, 10);
-            Point2d point2 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusC+sporcketParams.LengthE, -10);
+            Point2d point2 = _transientGeometry.CreatePoint2d(sporcketParams["RadiusC"]+sporcketParams["LengthE"], -10);
             sporcketSketch5.SketchLines.AddAsTwoPointRectangle(point, point2);
             extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch5.Profiles.AddForSolid(), PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
              _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
             PlanarSketch sporcketSketch6 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZY, _centerPoint.X);
-            point = _transientGeometry.CreatePoint2d((sporcketParams.LengthB/2)+sporcketParams.LengthA, 0);
-            DrawCircle(sporcketParams.RadiusF, sporcketSketch6, point);
+            point = _transientGeometry.CreatePoint2d((sporcketParams["LengthB"]/2)+sporcketParams["LengthA"], 0);
+            DrawCircle(sporcketParams["RadiusF"], sporcketSketch6, point);
             extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch6.Profiles.AddForSolid(), PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
             _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
@@ -248,12 +243,12 @@ namespace Sprocket
         /// </summary>
         /// <param name="sporcketParams">параметры детали</param>
        
-        private void ExtrudeArrayOfTeeth(SporcketParams sporcketParams)
+        private void ExtrudeArrayOfTeeth(Dictionary<string, double> sporcketParams)
         {
-            PlanarSketch sporcketSketch = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams.LengthA);
-            Point2d point = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, 0);
+            PlanarSketch sporcketSketch = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams["LengthA"]);
+            Point2d point = _transientGeometry.CreatePoint2d(sporcketParams["RadiusA"], 0);
 
-            DrawCircle(sporcketParams.DepthOfTooth, sporcketSketch, point);
+            DrawCircle(sporcketParams["DepthOfTooth"], sporcketSketch, point);
             ExtrudeDefinition extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch.Profiles.AddForSolid(), PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
             ExtrudeFeature  scratcExtrudeFeature = _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
@@ -262,7 +257,7 @@ namespace Sprocket
             featureCollection.Add(scratcExtrudeFeature);
 
             //Создание массива объектов
-            _partDef.Features.CircularPatternFeatures.Add(featureCollection, _partDef.WorkAxes[2], true, ((sporcketParams.RadiusA*3.14) / sporcketParams.DepthOfTooth)*0.9, "360 deg", true, PatternComputeTypeEnum.kIdenticalCompute);
+            _partDef.Features.CircularPatternFeatures.Add(featureCollection, _partDef.WorkAxes[2], true, ((sporcketParams["RadiusA"]*3.14) / sporcketParams["DepthOfTooth"])*0.9, "360 deg", true, PatternComputeTypeEnum.kIdenticalCompute);
 
         }
 

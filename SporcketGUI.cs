@@ -12,7 +12,7 @@ namespace Sprocket
         /// Создаем объект в поле видимости всего класса,
         /// чтобы можно было получить его в любом обработчике и методе.
         /// </summary>
-        private readonly SporcketParams _sporcket;
+        private readonly Dictionary<string, double> _sporcketParam;
 
         /// <summary>
         /// Список для хранения NumericUpDown.
@@ -26,7 +26,8 @@ namespace Sprocket
         {
             //Здесь создаем объект инкапсулирующий параметры звезды для того, чтобы
             //можно было сразу вставить дефолтные значения в текстбоксы   
-            _sporcket = new SporcketParams();
+            _sporcketParam = new Dictionary<string, double>();
+            InitializeParametes();
 
             //Инициализируется форма
             InitializeComponent();
@@ -51,11 +52,13 @@ namespace Sprocket
             {
                 if (control.GetType() == typeof(NumericUpDown))
                 {
-                    foreach (Parameter parameter in _sporcket.Parameters)
+                    for (int count = 0; count < _sporcketParam.Count; count++)
                     {
-                        if (control.Name == (@"numericUpDown" + parameter.Name))
+                        string key = _sporcketParam.ElementAt(count).Key;
+                        if (control.Name == (@"numericUpDown" + key))
                         {
-                            parameter.Value = Double.Parse(control.Text);
+                            _sporcketParam[key] = Double.Parse(control.Text);
+                            break;
                         }
                     }
                 }
@@ -71,7 +74,7 @@ namespace Sprocket
                 Builder concreteBuilder = new Builder(inventorManager.InvApp);
 
                 //Строим конкретный объект
-                concreteBuilder.Build(_sporcket);
+                concreteBuilder.Build(_sporcketParam);
             }
             else
             {
@@ -90,24 +93,38 @@ namespace Sprocket
         private void ButtonDefault_Click(object sender, EventArgs e)
         {
             // сброс параметров на стандартные
-            _sporcket.DefaultValues();
+            InitializeParametes();
 
             // заполнение формы стандартными значениями
             foreach (Control control in groupBoxParam.Controls)
             {
                 if (control.GetType() == typeof(NumericUpDown))
                 {
-                    foreach (Parameter parameter in _sporcket.Parameters)
+                    foreach (string parameter in _sporcketParam.Keys)
                     {
-                        if (control.Name == (@"numericUpDown" + parameter.Name))
+                        if (control.Name == (@"numericUpDown" + parameter))
                         {
-                            control.Text = parameter.Value.ToString();
+                            control.Text = _sporcketParam[parameter].ToString();
                         }
                     }
                 }
             }
         }
 
-        
+        private void InitializeParametes()
+        {
+            _sporcketParam.Clear();
+            _sporcketParam.Add("RadiusA", 125.0);
+            _sporcketParam.Add("RadiusB", 45.0);
+            _sporcketParam.Add("RadiusC", 25.0);
+            _sporcketParam.Add("LengthA", 15.0);
+            _sporcketParam.Add("LengthB", 40.0);
+            _sporcketParam.Add("LengthC", 15.0);
+            _sporcketParam.Add("LengthE", 10.0);
+            _sporcketParam.Add("NumberD", 6.0);
+            _sporcketParam.Add("RadiusD", 20.0);
+            _sporcketParam.Add("RadiusF", 5.0);
+            _sporcketParam.Add("DepthOfTooth", 10.0);
+        }
     }
 }
