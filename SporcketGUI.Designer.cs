@@ -128,7 +128,7 @@
             // 
             this.numericUpDownRadiusC.Location = new System.Drawing.Point(346, 79);
             this.numericUpDownRadiusC.Maximum = new decimal(new int[] {
-            40,
+            50,
             0,
             0,
             0});
@@ -141,7 +141,7 @@
             this.numericUpDownRadiusC.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownRadiusC.TabIndex = 3;
             this.numericUpDownRadiusC.Value = new decimal(new int[] {
-            25,
+            40,
             0,
             0,
             0});
@@ -260,7 +260,7 @@
             // 
             this.numericUpDownLengthE.Location = new System.Drawing.Point(346, 209);
             this.numericUpDownLengthE.Maximum = new decimal(new int[] {
-            19,
+            9,
             0,
             0,
             0});
@@ -273,7 +273,7 @@
             this.numericUpDownLengthE.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownLengthE.TabIndex = 9;
             this.numericUpDownLengthE.Value = new decimal(new int[] {
-            10,
+            9,
             0,
             0,
             0});

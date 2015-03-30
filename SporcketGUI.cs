@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
-using System.Drawing;
 
 namespace Sprocket 
 {
     public partial class SporcketGUI : Form
     {
         /// <summary>
-        /// Создаем объект в поле видимости всего класса,
-        /// чтобы можно было получить его в любом обработчике и методе.
+        /// Создаем каталог параметров
         /// </summary>
         private readonly Dictionary<string, double> _sporcketParam;
 
@@ -24,8 +22,7 @@ namespace Sprocket
         /// </summary>
         public SporcketGUI()
         {
-            //Здесь создаем объект инкапсулирующий параметры звезды для того, чтобы
-            //можно было сразу вставить дефолтные значения в текстбоксы   
+            //Здесь создаем объект и вводим параметры звезды    
             _sporcketParam = new Dictionary<string, double>();
             InitializeParametes();
 
@@ -111,19 +108,22 @@ namespace Sprocket
             }
         }
 
-        private void InitializeParametes()
+
+        //инициализация параметров
+        public void InitializeParametes()
         {
             _sporcketParam.Clear();
             _sporcketParam.Add("RadiusA", 125.0);
             _sporcketParam.Add("RadiusB", 45.0);
-            _sporcketParam.Add("RadiusC", 25.0);
+            _sporcketParam.Add("RadiusC", 30.0);
+            _sporcketParam.Add("RadiusD", 20.0);
+            _sporcketParam.Add("RadiusF", 5.0);
             _sporcketParam.Add("LengthA", 15.0);
             _sporcketParam.Add("LengthB", 40.0);
             _sporcketParam.Add("LengthC", 15.0);
             _sporcketParam.Add("LengthE", 10.0);
             _sporcketParam.Add("NumberD", 6.0);
-            _sporcketParam.Add("RadiusD", 20.0);
-            _sporcketParam.Add("RadiusF", 5.0);
+            
             _sporcketParam.Add("DepthOfTooth", 10.0);
         }
     }

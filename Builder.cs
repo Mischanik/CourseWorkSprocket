@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Inventor;
 
 namespace Sprocket
@@ -83,7 +82,7 @@ namespace Sprocket
         {
             if (sporcketParams == null) throw new ArgumentNullException();
 
-            //Вызываем методы для построения 
+            //выдавливаем внешнюю часть звезды 
             PlanarSketch sporcketSketch1 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, _centerPoint.X);
             Point2d point = _transientGeometry.CreatePoint2d(0, 0);
             DrawCircle(sporcketParams["RadiusA"], sporcketSketch1, point);
@@ -91,54 +90,8 @@ namespace Sprocket
             extrudeDef.SetDistanceExtent(sporcketParams["LengthA"], PartFeatureExtentDirectionEnum.kPositiveExtentDirection);
              _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
-          /*  PlanarSketch bevelSketch = MakeNewSketch(WorkPlanesEnum.WorkPlane_XY, 0);
-            {
-                Point2d pointA0 = _transientGeometry.CreatePoint2d(0, 0);
-                Point2d pointA1 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA-sporcketParams.DepthOfTooth, 0);
-                SketchLine lineA = bevelSketch.SketchLines.AddByTwoPoints(pointA0, pointA1);
-                Point2d pointB0 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, sporcketParams.LengthA/2);
-                Point2d pointB1 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, sporcketParams.LengthA/2 - sporcketParams.LengthA*0.6/2);
-                SketchLine lineB = bevelSketch.SketchLines.AddByTwoPoints(pointB0, pointB1);
-
-                //var t = bevelSketch.SketchEntities[0].;
-
-                bevelSketch.GeometricConstraints.AddPerpendicular((SketchEntity)lineA, (SketchEntity)lineB);
-                Point2d pointC = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, 0);
-                Point2d pointC1 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA - sporcketParams.DepthOfTooth / 2, 0);
-                Point2d pointD = _transientGeometry.CreatePoint2d(pointA1.X, pointB1.Y);
-                SketchArc arc = bevelSketch.SketchArcs.AddByCenterStartEndPoint(pointD, pointB1, pointA1, false);
-                ObjectCollection points = _invApp.TransientObjects.CreateObjectCollection();
-                points.Add(pointA1);
-                points.Add(pointC1);
-                points.Add(pointB1);
-/*
-                SketchSpline spline = bevelSketch.SketchSplines.Add(points, SplineFitMethodEnum.kSweetSplineFit);
-                bevelSketch.GeometricConstraints.AddMidpoint(lineB.EndSketchPoint, lineB);
-                bevelSketch.GeometricConstraints.AddMidpoint(lineA.EndSketchPoint, lineA);
-                bevelSketch.GeometricConstraints.AddTangent((SketchEntity)lineA, (SketchEntity)spline);*/
-                /**/
-              /*  Point2d oPt1 = default(Point2d);
-                oPt1 = _transientGeometry.CreatePoint2d(0, 0);
-
-                Point2d oPt2 = default(Point2d);
-                oPt2 = _transientGeometry.CreatePoint2d(0, -10);
-
-                Point2d oPt3 = default(Point2d);
-                oPt3 = _transientGeometry.CreatePoint2d(4, -5);
-
-                SketchLine oLine = default(SketchLine);
-                SketchLine oLine1 = default(SketchLine);
-
-                oLine = bevelSketch.SketchLines.AddByTwoPoints(oPt1, oPt2);
-                oLine1 = bevelSketch.SketchLines.AddByTwoPoints(bevelSketch.SketchLines[1].EndSketchPoint, oPt3);
-
-                bevelSketch.GeometricConstraints.AddPerpendicular((SketchEntity)oLine, oLine1 as SketchEntity, false, false);
-            }*/
-            // EdgeCollection edge = (
-           
-           // FilletDefinition = _partDef.Features.FilletFeatures.CreateFilletDefinition();
-
-
+         
+           // выдавливаем цилиндр
             PlanarSketch sporcketSketch2 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, _centerPoint.X);
             DrawCircle(sporcketParams["RadiusB"], sporcketSketch2, point);
             
@@ -147,19 +100,19 @@ namespace Sprocket
               _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
             TurnCamera();
-
+            // выдавливаем цилиндр в обратную сторону
             extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch2.Profiles.AddForSolid(),PartFeatureOperationEnum.kJoinOperation);
             extrudeDef.SetDistanceExtent(sporcketParams["LengthC"] , PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
             _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
-
+            // вырезаем отверстие в цилиндре
             PlanarSketch sporcketSketch3 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams["LengthA"]+sporcketParams["LengthB"]);
             DrawCircle(sporcketParams["RadiusC"], sporcketSketch3, point);
              extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch3.Profiles.AddForSolid(),PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
               _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
-            //рисуем круг
+            //рисуем круг 
 
             PlanarSketch sporcketSketch4 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, _centerPoint.X);
             point = _transientGeometry.CreatePoint2d(0, (sporcketParams["RadiusA"]-sporcketParams["RadiusB"])/2+sporcketParams["RadiusB"]);
@@ -176,6 +129,8 @@ namespace Sprocket
             //Создание массива объектов
             _partDef.Features.CircularPatternFeatures.Add(featureCollection, _partDef.WorkAxes[2], true, sporcketParams["NumberD"], "360 deg", true, PatternComputeTypeEnum.kIdenticalCompute);
 
+
+            // выдвливание выемки
             PlanarSketch sporcketSketch5 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams["LengthB"] + sporcketParams["LengthA"]);
             point = _transientGeometry.CreatePoint2d(0, 10);
             Point2d point2 = _transientGeometry.CreatePoint2d(sporcketParams["RadiusC"]+sporcketParams["LengthE"], -10);
@@ -184,6 +139,7 @@ namespace Sprocket
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
              _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
+            // выдавливание отверстия в выемке
             PlanarSketch sporcketSketch6 = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZY, _centerPoint.X);
             point = _transientGeometry.CreatePoint2d((sporcketParams["LengthB"]/2)+sporcketParams["LengthA"], 0);
             DrawCircle(sporcketParams["RadiusF"], sporcketSketch6, point);
@@ -191,6 +147,7 @@ namespace Sprocket
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
             _partDef.Features.ExtrudeFeatures.Add(extrudeDef);
 
+            // создание зубьев звездочки
             ExtrudeArrayOfTeeth(sporcketParams);
            
 
@@ -247,7 +204,7 @@ namespace Sprocket
         {
             PlanarSketch sporcketSketch = MakeNewSketch(WorkPlanesEnum.WorkPlane_ZX, sporcketParams["LengthA"]);
             Point2d point = _transientGeometry.CreatePoint2d(sporcketParams["RadiusA"], 0);
-
+            //выдавливание круга скраю звездочки
             DrawCircle(sporcketParams["DepthOfTooth"], sporcketSketch, point);
             ExtrudeDefinition extrudeDef = _partDef.Features.ExtrudeFeatures.CreateExtrudeDefinition(sporcketSketch.Profiles.AddForSolid(), PartFeatureOperationEnum.kCutOperation);
             extrudeDef.SetThroughAllExtent(PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
@@ -313,4 +270,55 @@ namespace Sprocket
             _partDef.Features.CircularPatternFeatures.
                 Add(featureCollection, _partDef.WorkAxes[1], true, count, 360, true,
                     PatternComputeTypeEnum.kIdenticalCompute);
-        */
+   * 
+   * 
+   * 
+   * 
+   *  /*  PlanarSketch bevelSketch = MakeNewSketch(WorkPlanesEnum.WorkPlane_XY, 0);
+            {
+                Point2d pointA0 = _transientGeometry.CreatePoint2d(0, 0);
+                Point2d pointA1 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA-sporcketParams.DepthOfTooth, 0);
+                SketchLine lineA = bevelSketch.SketchLines.AddByTwoPoints(pointA0, pointA1);
+                Point2d pointB0 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, sporcketParams.LengthA/2);
+                Point2d pointB1 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, sporcketParams.LengthA/2 - sporcketParams.LengthA*0.6/2);
+                SketchLine lineB = bevelSketch.SketchLines.AddByTwoPoints(pointB0, pointB1);
+
+                //var t = bevelSketch.SketchEntities[0].;
+
+                bevelSketch.GeometricConstraints.AddPerpendicular((SketchEntity)lineA, (SketchEntity)lineB);
+                Point2d pointC = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA, 0);
+                Point2d pointC1 = _transientGeometry.CreatePoint2d(sporcketParams.RadiusA - sporcketParams.DepthOfTooth / 2, 0);
+                Point2d pointD = _transientGeometry.CreatePoint2d(pointA1.X, pointB1.Y);
+                SketchArc arc = bevelSketch.SketchArcs.AddByCenterStartEndPoint(pointD, pointB1, pointA1, false);
+                ObjectCollection points = _invApp.TransientObjects.CreateObjectCollection();
+                points.Add(pointA1);
+                points.Add(pointC1);
+                points.Add(pointB1);
+/*
+                SketchSpline spline = bevelSketch.SketchSplines.Add(points, SplineFitMethodEnum.kSweetSplineFit);
+                bevelSketch.GeometricConstraints.AddMidpoint(lineB.EndSketchPoint, lineB);
+                bevelSketch.GeometricConstraints.AddMidpoint(lineA.EndSketchPoint, lineA);
+                bevelSketch.GeometricConstraints.AddTangent((SketchEntity)lineA, (SketchEntity)spline);*/
+                /**/
+              /*  Point2d oPt1 = default(Point2d);
+                oPt1 = _transientGeometry.CreatePoint2d(0, 0);
+
+                Point2d oPt2 = default(Point2d);
+                oPt2 = _transientGeometry.CreatePoint2d(0, -10);
+
+                Point2d oPt3 = default(Point2d);
+                oPt3 = _transientGeometry.CreatePoint2d(4, -5);
+
+                SketchLine oLine = default(SketchLine);
+                SketchLine oLine1 = default(SketchLine);
+
+                oLine = bevelSketch.SketchLines.AddByTwoPoints(oPt1, oPt2);
+                oLine1 = bevelSketch.SketchLines.AddByTwoPoints(bevelSketch.SketchLines[1].EndSketchPoint, oPt3);
+
+                bevelSketch.GeometricConstraints.AddPerpendicular((SketchEntity)oLine, oLine1 as SketchEntity, false, false);
+            }*/
+            // EdgeCollection edge = (
+           
+           // FilletDefinition = _partDef.Features.FilletFeatures.CreateFilletDefinition();
+
+        
