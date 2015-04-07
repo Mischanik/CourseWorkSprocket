@@ -16,7 +16,7 @@ namespace Sprocket
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SporcketGUI());
+            Application.Run(new SprocketGUI());
         }
     }
 }

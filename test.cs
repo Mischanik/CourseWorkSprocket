@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Inventor;
 using Microsoft.Office.Interop.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using File = System.IO.File;
 namespace Sprocket
 {
-    [TestFixture, Description("Тесты строителя")]
+    [TestFixture, Description("Тесты Sprocket")]
     internal class Test
     {
 
@@ -21,32 +16,177 @@ namespace Sprocket
         private readonly InventorManager _manager = new InventorManager();
 
         /// <summary>
-        /// параметры для тестирования.
+        /// Метод закрытия приложения.
         /// </summary>
-        private Dictionary<string, double> _sporcketParam;
+        public void ClearDoc()
+        {
+            // Подчищаем за собой
+            foreach (Document document in _manager.InvApp.Documents)
+            {
+                document.Close(true);
+            }
+        }
 
         /// <summary>
-        /// Сам билдер для тестирования.
+        /// параметры для тестирования.
         /// </summary>
-        
+        private SprocketParams _sporcketParam;
+
+        /// <summary>
+        /// билдер для тестирования.
+        /// </summary>
         private Builder _builder;
-      /*  [Test, Description("Нагрузочный тест")]
+
+        #region Тесты билдера
+
+      
+        [Test, Description("Позитивный тест для конструктора Builder")]
+        public void BuilderPositive()
+        {
+            // Проверяем конструктор валидной ссылкой.
+            Assert.DoesNotThrow(() => { new Builder(_manager.InvApp); });
+
+            ClearDoc();
+        }
+
+        [Test, Description("Негативный тест для конструктора Builder")]
+        public void BuilderNegative()
+        {
+            // Подаем невалидную ссылку на приложение.
+            Assert.Throws<ArgumentNullException>(() => { new Builder(null); });
+        }
+
+
+
+
+
+        [Test, Description("стандартное построение")]
+        public void BuildPositive()
+        {
+            _sporcketParam = new SprocketParams();
+
+            _builder = new Builder(_manager.InvApp);
+
+            //Проверяем, что постройка не выкинула исключение.
+            Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
+
+            foreach (Document document in _manager.InvApp.Documents)
+            {
+                document.Close(true);
+            }
+        }
+
+
+        [Test, Description("построение с максимальными параметрами")]
+        public void BuildMax()
+        {
+            _sporcketParam = new SprocketParams();
+            
+            _sporcketParam.Parameters["RadiusA"].Value = 350.0;
+            _sporcketParam.Parameters["RadiusB"].Value = 150.0;
+            _sporcketParam.Parameters["RadiusC"].Value = 50.0;
+            _sporcketParam.Parameters["RadiusD"].Value = 30.0;
+            _sporcketParam.Parameters["RadiusF"].Value = 10;
+            _sporcketParam.Parameters["LengthA"].Value = 30.0;
+            _sporcketParam.Parameters["LengthB"].Value = 70.0;
+            _sporcketParam.Parameters["LengthC"].Value = 50.0;
+            _sporcketParam.Parameters["NumberD"].Value = 10;
+            _sporcketParam.Parameters["LengthE"].Value = 9.0;
+            _sporcketParam.Parameters["DepthOfTooth"].Value = 10;
+           
+            _builder = new Builder(_manager.InvApp);
+
+            //Проверяем, что постройка не выкинула исключение.
+            Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
+
+            foreach (Document document in _manager.InvApp.Documents)
+            {
+                document.Close(true);
+            }
+        }
+
+
+        [Test, Description("построение с мимимальными параметрами")]
+        public void BuildMin()
+        {
+            _sporcketParam = new SprocketParams();
+            
+                _sporcketParam.Parameters["RadiusA"].Value = 100;
+            _sporcketParam.Parameters["RadiusB"].Value = 45;
+            _sporcketParam.Parameters["RadiusC"].Value = 20.0;
+            _sporcketParam.Parameters["RadiusD"].Value = 10.0;
+            _sporcketParam.Parameters["RadiusF"].Value = 2;
+            _sporcketParam.Parameters["LengthA"].Value = 10.0;
+            _sporcketParam.Parameters["LengthB"].Value = 30.0;
+            _sporcketParam.Parameters["LengthC"].Value = 10.0;
+            _sporcketParam.Parameters["NumberD"].Value = 2;
+            _sporcketParam.Parameters["LengthE"].Value = 5;
+            _sporcketParam.Parameters["DepthOfTooth"].Value = 3;
+                
+            _builder = new Builder(_manager.InvApp);
+
+            //Проверяем, что постройка не выкинула исключение.
+            Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
+
+
+            foreach (Document document in _manager.InvApp.Documents)
+            {
+                document.Close(true);
+            }
+        }
+
+        #endregion
+
+        #region Тесты параметров
+
+
+        /// <summary>
+        /// Тестируемый объект.
+        /// </summary>
+        private readonly Parameter _parameter = new Parameter
+        {
+            Max = 10,
+            Min = 0
+        };
+
+        /// <summary>
+        /// Невалидное значение.
+        /// </summary>
+        private const int TestValue = 11;
+
+        [Test, Description("Позитивный тест валидного значения")]
+        public void SetCorrectValue()
+        {
+            Assert.DoesNotThrow(() => { _parameter.Value = 5; });
+        }
+
+        [Test, Description("Негативный тест для невалидного значения, находящегося за границами.")]
+        [TestCase(ExpectedException = typeof (ArgumentOutOfRangeException))]
+        public void SetIncorrectValue()
+        {
+            _parameter.Value = TestValue;
+        }
+
+        [Test, Description("Тест того, что невалидное значение не сохраняется")]
+        public void ValueIsNotSaved()
+        {
+            try
+            {
+                _parameter.Value = TestValue;
+            }
+            catch (Exception)
+            {
+                Assert.AreNotEqual(_parameter.Value, TestValue);
+            }
+        }
+
+
+        #endregion
+
+        [Test, Description("Нагрузочный тест")]
         public void LoadTest()
         {
-            _sporcketParam = new Dictionary<string, double>
-            {
-                {"RadiusA", 125.0},
-                {"RadiusB", 45.0},
-                {"RadiusC", 30.0},
-                {"RadiusD", 20.0},
-                {"RadiusF", 5.0},
-                {"LengthA", 15.0},
-                {"LengthB", 40.0},
-                {"LengthC", 15.0},
-                {"LengthE", 10.0},
-                {"NumberD", 6.0},
-                {"DepthOfTooth", 10.0}
-            };
+         _sporcketParam = new SprocketParams();
             _builder = new Builder(_manager.InvApp);
             Stopwatch stopwatch = new Stopwatch();
             int docCount;
@@ -61,7 +201,7 @@ namespace Sprocket
             _Workbook nwb = null;
             _Worksheet nws = null;
             excelApp.Visible = true;
-            //excelApp.Visible = true;
+            
 
             //Get a new workbook.
             nwb = excelApp.Workbooks.Add();
@@ -73,7 +213,7 @@ namespace Sprocket
 
                 _builder = new Builder(_manager.InvApp);
 
-                //Проверяем, что постройка не выкинула ексепшн.
+                //Проверяем, что постройка не выкинула исключение.
                 Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
                 docCount = _manager.InvApp.Documents.Count - 1;
                 stopwatchCount = stopwatch.ElapsedMilliseconds;
@@ -84,138 +224,9 @@ namespace Sprocket
 
                 Console.WriteLine(i);
             }
-        
+
 
         }
-        */
-        [Test, Description("Позитивное стандартное построение")]
-        public void BuildPositive()
-        {
-            _sporcketParam = new Dictionary<string, double>
-            {
-                {"RadiusA", 125.0},
-                {"RadiusB", 45.0},
-                {"RadiusC", 30.0},
-                {"RadiusD", 20.0},
-                {"RadiusF", 5.0},
-                {"LengthA", 15.0},
-                {"LengthB", 40.0},
-                {"LengthC", 15.0},
-                {"LengthE", 9.0},
-                {"NumberD", 6.0},
-                {"DepthOfTooth", 10.0}
-            };
-
-            
-                _builder = new Builder(_manager.InvApp);
-
-                //Проверяем, что постройка не выкинула ексепшн.
-                Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
-            
-            
-            foreach (Document document in _manager.InvApp.Documents)
-            {
-                document.Close(true);
-            }
-        }
-        [Test, Description("Позитивное построение с максимальными параметрами")]
-        public void BuildMax()
-        {
-            _sporcketParam = new Dictionary<string, double>
-            {
-                {"RadiusA", 350.0},
-                {"RadiusB", 150.0},
-                {"RadiusC", 50.0},
-                {"RadiusD", 30.0},
-                {"RadiusF", 10.0},
-                {"LengthA", 30.0},
-                {"LengthB", 70.0},
-                {"LengthC", 50.0},
-                {"LengthE", 9.0},
-                {"NumberD", 10.0},
-                {"DepthOfTooth", 10.0}
-            };
-
-
-            _builder = new Builder(_manager.InvApp);
-
-            //Проверяем, что постройка не выкинула ексепшн.
-            Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
-
-
-            foreach (Document document in _manager.InvApp.Documents)
-            {
-                document.Close(true);
-            }
-        }
-
-
-        [Test, Description("Позитивное построение с мимимальными параметрами")]
-        public void BuildMin()
-        {
-            _sporcketParam = new Dictionary<string, double>
-            {
-                 {"RadiusA", 100.0},
-                {"RadiusB", 60.0},
-                {"RadiusC", 20.0},
-                {"RadiusD", 10.0},
-                {"RadiusF", 2.0},
-                {"LengthA", 10.0},
-                {"LengthB", 30.0},
-                {"LengthC", 10.0},
-                {"LengthE", 5.0},
-                {"NumberD",2.0},
-                {"DepthOfTooth", 3.0}
-            };
-
-
-            _builder = new Builder(_manager.InvApp);
-
-            //Проверяем, что постройка не выкинула ексепшн.
-            Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
-
-
-            foreach (Document document in _manager.InvApp.Documents)
-            {
-                document.Close(true);
-            }
-        }
-
-
-
-
-    /*    [Test, Description("Негативное построение")]
-        public void BuildNegative()
-        {
-            _sporcketParam = new Dictionary<string, double>
-            {
-                {"RadiusA", 100.0},
-                {"RadiusB", 60.0},
-                {"RadiusC", 20.0},
-                {"RadiusD", 10.0},
-                {"RadiusF", 2.0},
-                {"LengthA", 10.0},
-                {"LengthB", 30.0},
-                {"LengthC", 10.0},
-                {"LengthE", 5.0},
-                {"NumberD",2.0},
-                {"DepthOfTooth", 3.0}
-            };
-            
-            _builder = new Builder(_manager.InvApp);
-
-            //Проверяем что постройка выкинула ексепшн.
-
-            Assert.Throws<ArgumentNullException>(() => _builder.Build(_sporcketParam));
-
-            
-            foreach (Document document in _manager.InvApp.Documents)
-            {
-                document.Close(true);
-            }
-        }
-        *********************/
+    
     }
-        
-
 }

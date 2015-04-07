@@ -3,40 +3,42 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace Sprocket 
+
+namespace Sprocket
 {
-    public partial class SporcketGUI : Form
+    public partial class SprocketGUI : Form
     {
         /// <summary>
-        /// Создаем каталог параметров
+        //Здесь создаем объект и вводим параметры звезды    
         /// </summary>
-        private readonly Dictionary<string, double> _sporcketParam;
+        private readonly SprocketParams _sporcket;
 
         /// <summary>
         /// Список для хранения NumericUpDown.
         /// </summary>
-        private readonly List<NumericUpDown> _numericUpDown = new List<NumericUpDown>();
-
+        private readonly List<NumericUpDown> _numericUpDownControlList = new List<NumericUpDown>();
+      
         /// <summary>
         /// Конструктор формы
         /// </summary>
-        public SporcketGUI()
+        public SprocketGUI()
         {
-            //Здесь создаем объект и вводим параметры звезды    
-            _sporcketParam = new Dictionary<string, double>();
-            InitializeParametes();
-
+            //Здесь создаем объект инкапсулирующий параметры звезды для того, чтобы
+            //можно было сразу вставить дефолтные значения в текстбоксы   
+            _sporcket = new SprocketParams();
+            
             //Инициализируется форма
             InitializeComponent();
 
-            //Заполняется словарь текстбоксов с флагами по умолчанию.
+            //Заполняется список нумериков.
             foreach (Control control in groupBoxParam.Controls.Cast<Control>().
                 Where(control => control.GetType() == typeof(NumericUpDown)))
             {
-                _numericUpDown.Add((NumericUpDown)control);
+                _numericUpDownControlList.Add((NumericUpDown)control);
             }
+            //загрузка параметров на форму
+            LoadParamToForm();
 
-           
         }
 
         #region Обработчики
@@ -49,13 +51,11 @@ namespace Sprocket
             {
                 if (control.GetType() == typeof(NumericUpDown))
                 {
-                    for (int count = 0; count < _sporcketParam.Count; count++)
+                    foreach (KeyValuePair<string, Parameter> parameter in _sporcket.Parameters)
                     {
-                        string key = _sporcketParam.ElementAt(count).Key;
-                        if (control.Name == (@"numericUpDown" + key))
+                        if (control.Name == (@"numericUpDown" + parameter.Key))
                         {
-                            _sporcketParam[key] = Double.Parse(control.Text);
-                            break;
+                            parameter.Value.Value = Double.Parse(control.Text);
                         }
                     }
                 }
@@ -71,7 +71,7 @@ namespace Sprocket
                 Builder concreteBuilder = new Builder(inventorManager.InvApp);
 
                 //Строим конкретный объект
-                concreteBuilder.Build(_sporcketParam);
+                concreteBuilder.Build(_sporcket);
             }
             else
             {
@@ -79,7 +79,7 @@ namespace Sprocket
             }
         }
 
-      
+
         #endregion
 
         /// <summary>
@@ -90,41 +90,32 @@ namespace Sprocket
         private void ButtonDefault_Click(object sender, EventArgs e)
         {
             // сброс параметров на стандартные
-            InitializeParametes();
+            _sporcket.DefaultValues();
+            LoadParamToForm();
 
+        }
+
+        private void LoadParamToForm()
+        {
             // заполнение формы стандартными значениями
             foreach (Control control in groupBoxParam.Controls)
             {
                 if (control.GetType() == typeof(NumericUpDown))
                 {
-                    foreach (string parameter in _sporcketParam.Keys)
+                    foreach (KeyValuePair<string, Parameter> parameter in _sporcket.Parameters)
                     {
-                        if (control.Name == (@"numericUpDown" + parameter))
-                        {
-                            control.Text = _sporcketParam[parameter].ToString();
+                        if (control.Name == (@"numericUpDown" + parameter.Key))
+                        { 
+                            ((NumericUpDown) control).Minimum = (decimal)parameter.Value.Min;
+                            ((NumericUpDown) control).Maximum = (decimal)parameter.Value.Max;
+                            ((NumericUpDown) control).Value = (decimal)parameter.Value.Value;
+                           
                         }
                     }
                 }
             }
         }
 
-
-        //инициализация параметров
-        public void InitializeParametes()
-        {
-            _sporcketParam.Clear();
-            _sporcketParam.Add("RadiusA", 125.0);
-            _sporcketParam.Add("RadiusB", 45.0);
-            _sporcketParam.Add("RadiusC", 30.0);
-            _sporcketParam.Add("RadiusD", 20.0);
-            _sporcketParam.Add("RadiusF", 5.0);
-            _sporcketParam.Add("LengthA", 15.0);
-            _sporcketParam.Add("LengthB", 40.0);
-            _sporcketParam.Add("LengthC", 15.0);
-            _sporcketParam.Add("LengthE", 10.0);
-            _sporcketParam.Add("NumberD", 6.0);
-            
-            _sporcketParam.Add("DepthOfTooth", 10.0);
-        }
+     
     }
 }

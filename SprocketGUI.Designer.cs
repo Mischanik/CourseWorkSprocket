@@ -1,6 +1,6 @@
 ﻿namespace Sprocket
 {
-    partial class SporcketGUI
+    partial class SprocketGUI
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SporcketGUI));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SprocketGUI));
             this.ButtonStart = new System.Windows.Forms.Button();
             this.numericUpDownRadiusA = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownRadiusB = new System.Windows.Forms.NumericUpDown();
@@ -84,199 +84,109 @@
             // 
             this.numericUpDownRadiusA.Location = new System.Drawing.Point(346, 27);
             this.numericUpDownRadiusA.Maximum = new decimal(new int[] {
-            350,
             0,
-            0,
-            0});
-            this.numericUpDownRadiusA.Minimum = new decimal(new int[] {
-            100,
             0,
             0,
             0});
             this.numericUpDownRadiusA.Name = "numericUpDownRadiusA";
             this.numericUpDownRadiusA.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownRadiusA.TabIndex = 1;
-            this.numericUpDownRadiusA.Value = new decimal(new int[] {
-            125,
-            0,
-            0,
-            0});
             // 
             // numericUpDownRadiusB
             // 
             this.numericUpDownRadiusB.Location = new System.Drawing.Point(346, 53);
             this.numericUpDownRadiusB.Maximum = new decimal(new int[] {
-            150,
             0,
-            0,
-            0});
-            this.numericUpDownRadiusB.Minimum = new decimal(new int[] {
-            60,
             0,
             0,
             0});
             this.numericUpDownRadiusB.Name = "numericUpDownRadiusB";
             this.numericUpDownRadiusB.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownRadiusB.TabIndex = 2;
-            this.numericUpDownRadiusB.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
             // 
             // numericUpDownRadiusC
             // 
             this.numericUpDownRadiusC.Location = new System.Drawing.Point(346, 79);
             this.numericUpDownRadiusC.Maximum = new decimal(new int[] {
-            50,
             0,
-            0,
-            0});
-            this.numericUpDownRadiusC.Minimum = new decimal(new int[] {
-            20,
             0,
             0,
             0});
             this.numericUpDownRadiusC.Name = "numericUpDownRadiusC";
             this.numericUpDownRadiusC.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownRadiusC.TabIndex = 3;
-            this.numericUpDownRadiusC.Value = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
             // 
             // numericUpDownLengthA
             // 
             this.numericUpDownLengthA.Location = new System.Drawing.Point(346, 131);
             this.numericUpDownLengthA.Maximum = new decimal(new int[] {
-            30,
             0,
-            0,
-            0});
-            this.numericUpDownLengthA.Minimum = new decimal(new int[] {
-            10,
             0,
             0,
             0});
             this.numericUpDownLengthA.Name = "numericUpDownLengthA";
             this.numericUpDownLengthA.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownLengthA.TabIndex = 4;
-            this.numericUpDownLengthA.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
             // 
             // numericUpDownLengthB
             // 
             this.numericUpDownLengthB.Location = new System.Drawing.Point(346, 157);
             this.numericUpDownLengthB.Maximum = new decimal(new int[] {
-            70,
             0,
-            0,
-            0});
-            this.numericUpDownLengthB.Minimum = new decimal(new int[] {
-            30,
             0,
             0,
             0});
             this.numericUpDownLengthB.Name = "numericUpDownLengthB";
             this.numericUpDownLengthB.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownLengthB.TabIndex = 5;
-            this.numericUpDownLengthB.Value = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
             // 
             // numericUpDownLengthC
             // 
             this.numericUpDownLengthC.Location = new System.Drawing.Point(346, 183);
             this.numericUpDownLengthC.Maximum = new decimal(new int[] {
-            50,
             0,
-            0,
-            0});
-            this.numericUpDownLengthC.Minimum = new decimal(new int[] {
-            10,
             0,
             0,
             0});
             this.numericUpDownLengthC.Name = "numericUpDownLengthC";
             this.numericUpDownLengthC.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownLengthC.TabIndex = 6;
-            this.numericUpDownLengthC.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
             // 
             // numericUpDownRadiusD
             // 
             this.numericUpDownRadiusD.Location = new System.Drawing.Point(346, 105);
             this.numericUpDownRadiusD.Maximum = new decimal(new int[] {
-            30,
             0,
-            0,
-            0});
-            this.numericUpDownRadiusD.Minimum = new decimal(new int[] {
-            10,
             0,
             0,
             0});
             this.numericUpDownRadiusD.Name = "numericUpDownRadiusD";
             this.numericUpDownRadiusD.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownRadiusD.TabIndex = 7;
-            this.numericUpDownRadiusD.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
             // 
             // numericUpDownNumberD
             // 
             this.numericUpDownNumberD.Location = new System.Drawing.Point(346, 261);
             this.numericUpDownNumberD.Maximum = new decimal(new int[] {
-            10,
             0,
-            0,
-            0});
-            this.numericUpDownNumberD.Minimum = new decimal(new int[] {
-            2,
             0,
             0,
             0});
             this.numericUpDownNumberD.Name = "numericUpDownNumberD";
             this.numericUpDownNumberD.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownNumberD.TabIndex = 8;
-            this.numericUpDownNumberD.Value = new decimal(new int[] {
-            6,
-            0,
-            0,
-            0});
             // 
             // numericUpDownLengthE
             // 
             this.numericUpDownLengthE.Location = new System.Drawing.Point(346, 209);
             this.numericUpDownLengthE.Maximum = new decimal(new int[] {
-            9,
             0,
-            0,
-            0});
-            this.numericUpDownLengthE.Minimum = new decimal(new int[] {
-            5,
             0,
             0,
             0});
             this.numericUpDownLengthE.Name = "numericUpDownLengthE";
             this.numericUpDownLengthE.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownLengthE.TabIndex = 9;
-            this.numericUpDownLengthE.Value = new decimal(new int[] {
-            9,
-            0,
-            0,
-            0});
             // 
             // label1
             // 
@@ -322,23 +232,13 @@
             // 
             this.numericUpDownDepthOfTooth.Location = new System.Drawing.Point(346, 288);
             this.numericUpDownDepthOfTooth.Maximum = new decimal(new int[] {
-            10,
             0,
-            0,
-            0});
-            this.numericUpDownDepthOfTooth.Minimum = new decimal(new int[] {
-            3,
             0,
             0,
             0});
             this.numericUpDownDepthOfTooth.Name = "numericUpDownDepthOfTooth";
             this.numericUpDownDepthOfTooth.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownDepthOfTooth.TabIndex = 22;
-            this.numericUpDownDepthOfTooth.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
             // 
             // label11
             // 
@@ -362,23 +262,13 @@
             // 
             this.numericUpDownRadiusF.Location = new System.Drawing.Point(346, 235);
             this.numericUpDownRadiusF.Maximum = new decimal(new int[] {
-            10,
             0,
-            0,
-            0});
-            this.numericUpDownRadiusF.Minimum = new decimal(new int[] {
-            2,
             0,
             0,
             0});
             this.numericUpDownRadiusF.Name = "numericUpDownRadiusF";
             this.numericUpDownRadiusF.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownRadiusF.TabIndex = 19;
-            this.numericUpDownRadiusF.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             // 
             // label9
             // 
@@ -481,7 +371,7 @@
             this.Controls.Add(this.groupBoxParam);
             this.Controls.Add(this.ButtonStart);
             this.Name = "SporcketGUI";
-            this.Text = "Звездочка цепной передачи";
+            this.Text = ";h";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadiusA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadiusB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadiusC)).EndInit();
