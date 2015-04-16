@@ -76,24 +76,25 @@ namespace Sprocket
             }
         }
 
-
-        [Test, Description("построение с максимальными параметрами")]
-        public void BuildMax()
+         [Test, Description(" Тест построения детали по заданным параметрам")]
+        [TestCase(350, 120, 50, 15, 10, 30, 70, 50, 9, 10, 8, "ABSDEFGHIJKLMNOPQRSTUVWXYZ")]
+        [TestCase(150, 80, 20, 10, 2, 10, 30, 10, 5, 3, 2, "")]
+        public void Build(double RadiusA, double RadiusB, double RadiusC, double RadiusD, 
+             double RadiusF, double LengthA, double LengthB,double LengthC, double LengthE, double DepthOfTooth,double NumberD, string Emboss)
         {
             _sporcketParam = new SprocketParams();
-            
-            _sporcketParam.Parameters["RadiusA"].Value = 350.0;
-            _sporcketParam.Parameters["RadiusB"].Value = 150.0;
-            _sporcketParam.Parameters["RadiusC"].Value = 50.0;
-            _sporcketParam.Parameters["RadiusD"].Value = 30.0;
-            _sporcketParam.Parameters["RadiusF"].Value = 10;
-            _sporcketParam.Parameters["LengthA"].Value = 30.0;
-            _sporcketParam.Parameters["LengthB"].Value = 70.0;
-            _sporcketParam.Parameters["LengthC"].Value = 50.0;
-            _sporcketParam.Parameters["NumberD"].Value = 10;
-            _sporcketParam.Parameters["LengthE"].Value = 9.0;
-            _sporcketParam.Parameters["DepthOfTooth"].Value = 10;
-           
+            _sporcketParam.Parameters["RadiusA"].Value = RadiusA;
+            _sporcketParam.Parameters["RadiusB"].Value = RadiusB;
+            _sporcketParam.Parameters["RadiusC"].Value = RadiusC;
+            _sporcketParam.Parameters["RadiusD"].Value = RadiusD;
+            _sporcketParam.Parameters["RadiusF"].Value = RadiusF;
+            _sporcketParam.Parameters["LengthA"].Value = LengthA;
+            _sporcketParam.Parameters["LengthB"].Value = LengthB;
+            _sporcketParam.Parameters["LengthC"].Value = LengthC;
+            _sporcketParam.Parameters["NumberD"].Value = NumberD;
+            _sporcketParam.Parameters["LengthE"].Value = LengthE;
+            _sporcketParam.Parameters["DepthOfTooth"].Value = DepthOfTooth;
+            _sporcketParam.Parameters["Emboss"].ParamTextValue = Emboss;
             _builder = new Builder(_manager.InvApp);
 
             //Проверяем, что постройка не выкинула исключение.
@@ -106,34 +107,7 @@ namespace Sprocket
         }
 
 
-        [Test, Description("построение с мимимальными параметрами")]
-        public void BuildMin()
-        {
-            _sporcketParam = new SprocketParams();
-            
-                _sporcketParam.Parameters["RadiusA"].Value = 100;
-            _sporcketParam.Parameters["RadiusB"].Value = 45;
-            _sporcketParam.Parameters["RadiusC"].Value = 20.0;
-            _sporcketParam.Parameters["RadiusD"].Value = 10.0;
-            _sporcketParam.Parameters["RadiusF"].Value = 2;
-            _sporcketParam.Parameters["LengthA"].Value = 10.0;
-            _sporcketParam.Parameters["LengthB"].Value = 30.0;
-            _sporcketParam.Parameters["LengthC"].Value = 10.0;
-            _sporcketParam.Parameters["NumberD"].Value = 2;
-            _sporcketParam.Parameters["LengthE"].Value = 5;
-            _sporcketParam.Parameters["DepthOfTooth"].Value = 3;
-                
-            _builder = new Builder(_manager.InvApp);
-
-            //Проверяем, что постройка не выкинула исключение.
-            Assert.DoesNotThrow(() => _builder.Build(_sporcketParam));
-
-
-            foreach (Document document in _manager.InvApp.Documents)
-            {
-                document.Close(true);
-            }
-        }
+       
 
         #endregion
 

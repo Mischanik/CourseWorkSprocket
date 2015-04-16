@@ -12,7 +12,8 @@ namespace Sprocket
         /// Приватное значение параметра
         /// </summary>
         private double _paramValue;
- 
+
+        
         /// <summary>
         /// Публичное значение параметра
         /// </summary>
@@ -31,6 +32,11 @@ namespace Sprocket
                 }
             }
         }
+
+        /// <summary>
+        /// Строковое значение параметра
+        /// </summary>
+        public string ParamTextValue { get; set; }
 
         /// <summary>
         /// Минимальная граница

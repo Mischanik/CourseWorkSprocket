@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
-
+using System.Windows;
 
 namespace Sprocket
 {
@@ -11,7 +11,7 @@ namespace Sprocket
         /// <summary>
         //Здесь создаем объект и вводим параметры звезды    
         /// </summary>
-        private readonly SprocketParams _sporcket;
+        private readonly SprocketParams _sprocket;
 
         /// <summary>
         /// Список для хранения NumericUpDown.
@@ -25,7 +25,7 @@ namespace Sprocket
         {
             //Здесь создаем объект инкапсулирующий параметры звезды для того, чтобы
             //можно было сразу вставить дефолтные значения в текстбоксы   
-            _sporcket = new SprocketParams();
+            _sprocket = new SprocketParams();
             
             //Инициализируется форма
             InitializeComponent();
@@ -36,6 +36,7 @@ namespace Sprocket
             {
                 _numericUpDownControlList.Add((NumericUpDown)control);
             }
+
             //загрузка параметров на форму
             LoadParamToForm();
 
@@ -51,7 +52,7 @@ namespace Sprocket
             {
                 if (control.GetType() == typeof(NumericUpDown))
                 {
-                    foreach (KeyValuePair<string, Parameter> parameter in _sporcket.Parameters)
+                    foreach (KeyValuePair<string, Parameter> parameter in _sprocket.Parameters)
                     {
                         if (control.Name == (@"numericUpDown" + parameter.Key))
                         {
@@ -60,7 +61,34 @@ namespace Sprocket
                     }
                 }
             }
-
+            foreach (KeyValuePair<string, Parameter> parameter in _sprocket.Parameters)
+                    if (parameter.Key == "Emboss")
+                        parameter.Value.ParamTextValue = textBoxEmboss.Text;
+            if (textBoxEmboss.TextLength >= 30)
+            {
+                const string message = "строка более 30 символов, обрезать её до максимльно возможной длины 30?";
+                const string caption = "Запуск построения детли";
+                var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    Start();
+                }
+                else
+                {
+                    textBoxEmboss.Focus();
+                    textBoxEmboss.SelectionStart = 29;
+                    textBoxEmboss.SelectionLength = textBoxEmboss.TextLength;
+                }
+            
+            }
+            else
+                Start();
+            
+            
+        }
+        private void Start()
+        {
+            
             //Запуск инвентора
             InventorManager inventorManager = new InventorManager();
 
@@ -71,16 +99,16 @@ namespace Sprocket
                 Builder concreteBuilder = new Builder(inventorManager.InvApp);
 
                 //Строим конкретный объект
-                concreteBuilder.Build(_sporcket);
+                concreteBuilder.Build(_sprocket);
             }
             else
             {
                 MessageBox.Show(@"Не удалось запустить Inventor");
             }
+                
         }
 
-
-        #endregion
+       
 
         /// <summary>
         /// Обработчик нажания кнопки "по умолчанию"
@@ -90,11 +118,11 @@ namespace Sprocket
         private void ButtonDefault_Click(object sender, EventArgs e)
         {
             // сброс параметров на стандартные
-            _sporcket.DefaultValues();
+            _sprocket.DefaultValues();
             LoadParamToForm();
 
         }
-
+         #endregion
         private void LoadParamToForm()
         {
             // заполнение формы стандартными значениями
@@ -102,7 +130,7 @@ namespace Sprocket
             {
                 if (control.GetType() == typeof(NumericUpDown))
                 {
-                    foreach (KeyValuePair<string, Parameter> parameter in _sporcket.Parameters)
+                    foreach (KeyValuePair<string, Parameter> parameter in _sprocket.Parameters)
                     {
                         if (control.Name == (@"numericUpDown" + parameter.Key))
                         { 
@@ -114,7 +142,15 @@ namespace Sprocket
                     }
                 }
             }
+            foreach (KeyValuePair<string, Parameter> parameter in _sprocket.Parameters)
+            {
+                if (parameter.Key == "Emboss")
+                { 
+                    textBoxEmboss.Text = parameter.Value.ParamTextValue; 
+                }
+            }
         }
+
 
      
     }

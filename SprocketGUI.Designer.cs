@@ -41,6 +41,8 @@
             this.numericUpDownLengthE = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxParam = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBoxEmboss = new System.Windows.Forms.TextBox();
             this.numericUpDownDepthOfTooth = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -199,6 +201,8 @@
             // 
             // groupBoxParam
             // 
+            this.groupBoxParam.Controls.Add(this.label12);
+            this.groupBoxParam.Controls.Add(this.textBoxEmboss);
             this.groupBoxParam.Controls.Add(this.numericUpDownDepthOfTooth);
             this.groupBoxParam.Controls.Add(this.label11);
             this.groupBoxParam.Controls.Add(this.label10);
@@ -227,6 +231,24 @@
             this.groupBoxParam.TabIndex = 11;
             this.groupBoxParam.TabStop = false;
             this.groupBoxParam.Text = "Введите параметры звезды";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 314);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(67, 13);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "Гравировка";
+            // 
+            // textBoxEmboss
+            // 
+            this.textBoxEmboss.Location = new System.Drawing.Point(271, 314);
+            this.textBoxEmboss.MaxLength = 55;
+            this.textBoxEmboss.Name = "textBoxEmboss";
+            this.textBoxEmboss.Size = new System.Drawing.Size(195, 20);
+            this.textBoxEmboss.TabIndex = 23;
+            this.textBoxEmboss.Text = "Sprocket";
             // 
             // numericUpDownDepthOfTooth
             // 
@@ -361,7 +383,7 @@
             this.ButtonDefault.UseVisualStyleBackColor = true;
             this.ButtonDefault.Click += new System.EventHandler(this.ButtonDefault_Click);
             // 
-            // SporcketGUI
+            // SprocketGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -370,8 +392,8 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBoxParam);
             this.Controls.Add(this.ButtonStart);
-            this.Name = "SporcketGUI";
-            this.Text = ";h";
+            this.Name = "SprocketGUI";
+            this.Text = "Sprocket";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadiusA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadiusB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadiusC)).EndInit();
@@ -418,6 +440,8 @@
         private System.Windows.Forms.Button ButtonDefault;
         private System.Windows.Forms.NumericUpDown numericUpDownDepthOfTooth;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxEmboss;
     }
 }
 
